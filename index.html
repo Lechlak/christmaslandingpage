@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Lechlaks – Merry Christmas Podcast</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* -------------------------
+   GLOBAL
+--------------------------*/
+body {
+  margin: 0;
+  font-family: "Playfair Display", serif, Inter, sans-serif;
+  background-color: #fffdf8;
+  color: #033;
+  overflow-x: hidden;
+}
+
+h1, h2 {
+  font-family: "Playfair Display", serif;
+}
+
+img { max-width: 100%; }
+
+section { position: relative; }
+
+/* Fade animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -------------------------
+   NAVBAR
+--------------------------*/
+nav {
+  width: 100%;
+  padding: 20px 40px;
+  background: #004b35;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+nav .logo { font-size: 22px; font-weight: 600; }
+
+nav .links a {
+  margin: 0 16px;
+  font-weight: 500;
+  color: white;
+}
+
+nav .subscribe {
+  background: #c62828;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: white;
+}
+
+/* -------------------------
+   HERO
+--------------------------*/
+/* -------------------------
+   HERO
+--------------------------*/
+.hero {
+  background: linear-gradient(#004b35, #0b664b, #f4f4e3);
+  padding: 120px 40px 160px;
+  color: white;
+}
+
+.hero-grid {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  align-items: center;
+  gap: 50px;
+}
+
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* Album cover */
+.hero-image {
+  display: flex;
+  justify-content: center;
+}
+
+.podcast-cover {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border: 5px solid #f7931e;
+  border-radius: 6px;
+  box-shadow: 0px 6px 12px rgba(0,0,0,0.35);
+  transform: rotate(-3.5deg);
+  transition: transform 0.25s ease;
+}
+
+.podcast-cover:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+/* Text area */
+.hero-content {
+  max-width: 550px;
+}
+
+.badge {
+  background: #fbd65b;
+  color: #643d00;
+  padding: 7px 16px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-size: clamp(34px, 5.5vw, 56px);
+  margin: 0;
+}
+
+.family {
+  font-size: clamp(28px, 4.5vw, 40px);
+  color: #ffa44d;
+  margin-top: 14px;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-top: 10px;
+  max-width: 420px;
+}
+
+@media (max-width: 900px) {
+  .hero p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+/* -------------------------
+   AUDIO PLAYER
+--------------------------*/
+.audio-box {
+  margin-top: 24px;
+  background: #e6e7e0;
+  padding: 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #d9452d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  font-size: 20px;
+  user-select: none;
+  transition: 0.2s;
+}
+.play-btn:hover { opacity: 0.85; }
+
+.progress {
+  flex-grow: 1;
+  height: 6px;
+  background: #ccc;
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+}
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #d9452d;
+  border-radius: 6px;
+}
+
+.speed-btn {
+  font-size: 12px;
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  cursor: pointer;
+}
+
+/* -------------------------
+   QUOTE SECTION
+--------------------------*/
+.quote-section {
+  background: #c02222;
+  padding: 90px 20px;
+  color: white;
+  text-align: center;
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  line-height: 1.7;
+}
+
+.quote-section .author {
+  margin-top: 25px;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.author img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  margin-bottom: 8px;
+}
+
+/* -------------------------
+   BEHIND THE SCENES
+--------------------------*/
+.section {
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.section small {
+  color: #8a8a8a;
+  letter-spacing: 2px;
+}
+
+.gallery {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.gallery img {
+  width: 100%;
+  border-radius: 14px;
+  height: 240px;
+  object-fit: cover;
+  transition: 0.3s ease;
+}
+
+.gallery img:hover {
+  transform: scale(1.03);
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">🎙️ The Lechlaks</div>
+  
+</nav>
+
+<!-- HERO -->
+<!-- HERO -->
+<section class="hero fade-in">
+  <div class="hero-grid">
+
+    <!-- LEFT: Album / photo -->
+    <div class="hero-image">
+      <img src="./album-cover.jpeg" alt="Podcast Cover" class="podcast-cover">
+    </div>
+
+    <!-- RIGHT: Text + audio -->
+    <div class="hero-content">
+      <span class="badge">⭐ #1 Family Podcast on Rockdale Lane</span>
+
+      <h1>Merry Christmas from</h1>
+      <div class="family">The Lechlaks</div>
+
+      <p>Join us for our annual family recap — filled with memories, laughter, and all the moments that made 2025 special.</p>
+
+      <div class="audio-box">
+        <div class="play-btn">▶</div>
+        <div class="progress"><div class="progress-fill"></div></div>
+        <button class="speed-btn">1×</button>
+      </div>
+
+      <audio id="audio" src="./LechlakFamilyHolidayPodcast.mp3"></audio>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- QUOTE -->
+<section class="quote-section fade-in">
+  <div>“Strange, isn't it? Each man's life touches so many other lives. And when he isn't around, he leaves an awful hole, doesn't he.”</div>
+
+  <div class="author">
+    <img src="./itsawonderfullife.jpeg" alt="">
+    <strong>Clarence</strong>
+    <div>It's a Wonderful Life</div>
+  </div>
+</section>
+
+<!-- BEHIND THE SCENES -->
+<section class="section fade-in">
+  <small>SHOW NOTES</small>
+  <h2>Behind The Scenes</h2>
+
+  <div class="gallery">
+    <img src="https://placehold.co/400x300?text=Christmas+1" alt="">
+    <img src="https://placehold.co/400x300?text=Christmas+2" alt="">
+    <img src="https://placehold.co/400x300?text=Christmas+3" alt="">
+    <img src="https://placehold.co/400x300?text=Christmas+4" alt="">
+  </div>
+</section>
+
+<!-- AUDIO PLAYER JS -->
+<script>
+const audio = document.getElementById("audio");
+const playBtn = document.querySelector(".play-btn");
+const speedBtn = document.querySelector(".speed-btn");
+const progress = document.querySelector(".progress");
+const progressFill = document.querySelector(".progress-fill");
+
+let isPlaying = false;
+let speed = 1;
+
+// Play / Pause
+playBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    audio.play();
+    playBtn.textContent = "⏸";
+  } else {
+    audio.pause();
+    playBtn.textContent = "▶";
+  }
+  isPlaying = !isPlaying;
+});
+
+// Update progress bar as audio plays
+audio.addEventListener("timeupdate", () => {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressFill.style.width = percent + "%";
+});
+
+// Scrub to position when clicking progress bar
+progress.addEventListener("click", (e) => {
+  const rect = progress.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const newTime = (clickX / progress.offsetWidth) * audio.duration;
+  audio.currentTime = newTime;
+});
+
+// Playback speed toggle
+speedBtn.addEventListener("click", () => {
+  speed = speed === 1 ? 1.5 : speed === 1.5 ? 2 : 1;
+  audio.playbackRate = speed;
+  speedBtn.textContent = speed + "×";
+});
+</script>
+
+</body>
+</html>
