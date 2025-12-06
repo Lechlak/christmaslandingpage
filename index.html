@@ -13,6 +13,18 @@
 /* -------------------------
    GLOBAL
 --------------------------*/
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+.hero,
+.hero-grid,
+.hero-content,
+.hero-image {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: "Playfair Display", serif, Inter, sans-serif;
@@ -90,11 +102,13 @@ nav .logo {
 
 @media (max-width: 900px) {
 
+  nav { width:90%;}
+
   .badge {
     margin-top:1.5em;
     margin-bottom:1.5em;
   }
-  /* stack the hero as a column so order works */
+
   .hero-grid {
     display: flex;
     flex-direction: column;
@@ -102,7 +116,6 @@ nav .logo {
     gap: 24px;
   }
 
-  /* Make hero-content a flex-column so we can reorder its children */
   .hero-content {
     display: flex;
     flex-direction: column;
@@ -111,21 +124,15 @@ nav .logo {
     width: 100%;
   }
 
-  /* Order the two main siblings: image first, content second */
   .hero-image { order: 1; width: 100%; display:flex; justify-content:center; }
   .hero-content { order: 2; }
 
-  /* Now set the exact order of items inside .hero-content
-     DOM inside .hero-content is: .badge, h1, .family, p, .audio-box
-     We want: h1, .family, .audio-box, .badge, p
-  */
   .hero-content .badge    { order: 4; }
   .hero-content h1        { order: 1; }
   .hero-content .family   { order: 2; }
   .hero-content .audio-box{ order: 3; }
   .hero-content p         { order: 5; padding-top:0;margin-top: 0 !important; }
 
-  /* small tweaks for spacing on narrow screens */
   .podcast-cover, .hero-image { max-width: 250px; }
   .hero h1 { margin-top: 8px; }
   .audio-box { width: 92%; max-width: 420px; }
@@ -191,7 +198,7 @@ nav .logo {
 }
 
 /* -------------------------
-   AUDIO PLAYER
+   AUDIO PLAYER (updated)
 --------------------------*/
 .audio-box {
   margin-top: 24px;
@@ -217,6 +224,7 @@ nav .logo {
   }
 }
 
+/* SVG Play Button */
 .play-btn {
   width: 44px;
   height: 44px;
@@ -226,13 +234,19 @@ nav .logo {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  color: white;
-  font-size: 20px;
   user-select: none;
   transition: 0.2s;
 }
+
 .play-btn:hover { opacity: 0.85; }
 
+.play-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: #fff;
+}
+
+/* Progress bar */
 .progress {
   flex-grow: 1;
   height: 6px;
@@ -241,6 +255,7 @@ nav .logo {
   position: relative;
   cursor: pointer;
 }
+
 .progress-fill {
   width: 0%;
   height: 100%;
@@ -317,20 +332,18 @@ nav .logo {
 <!-- NAV -->
 <nav>
   <div class="logo">Welcome to the Lechlak Family Holiday Podcast</div>
-  
 </nav>
 
-<!-- HERO -->
 <!-- HERO -->
 <section class="hero fade-in">
   <div class="hero-grid">
 
-    <!-- LEFT: Album / photo -->
+    <!-- LEFT -->
     <div class="hero-image">
       <img src="./album-cover.jpeg" alt="Podcast Cover" class="podcast-cover">
     </div>
 
-    <!-- RIGHT: Text + audio -->
+    <!-- RIGHT -->
     <div class="hero-content">
       <span class="badge">⭐ #1 Family Podcast on Rockdale Lane</span>
 
@@ -340,7 +353,18 @@ nav .logo {
       <p>Join us for our annual family recap — filled with memories, laughter, and all the moments that made 2025 special.</p>
 
       <div class="audio-box">
-        <div class="play-btn">▶</div>
+        
+        <!-- NEW SVG PLAY BUTTON -->
+        <div class="play-btn" id="playBtn">
+          <svg id="playIcon" viewBox="0 0 24 24">
+            <polygon points="6,4 20,12 6,20"></polygon>
+          </svg>
+          <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;">
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+        </div>
+
         <div class="progress"><div class="progress-fill"></div></div>
         <button class="speed-btn">1×</button>
       </div>
@@ -350,7 +374,6 @@ nav .logo {
 
   </div>
 </section>
-
 
 <!-- QUOTE -->
 <section class="quote-section fade-in">
@@ -367,6 +390,7 @@ nav .logo {
   <h2>Behind The Scenes</h2>
 
   <div class="gallery">
+    <!-- your gallery images unchanged -->
     <img src="./gallery/EDN19536 2.jpeg" alt="">
     <img src="./gallery/IMG_3583.jpeg" alt="">
     <img src="./gallery/IMG_2040.jpeg" alt="">
@@ -387,7 +411,10 @@ nav .logo {
 <!-- AUDIO PLAYER JS -->
 <script>
 const audio = document.getElementById("audio");
-const playBtn = document.querySelector(".play-btn");
+const playBtn = document.getElementById("playBtn");
+const playIcon = document.getElementById("playIcon");
+const pauseIcon = document.getElementById("pauseIcon");
+
 const speedBtn = document.querySelector(".speed-btn");
 const progress = document.querySelector(".progress");
 const progressFill = document.querySelector(".progress-fill");
@@ -399,21 +426,30 @@ let speed = 1;
 playBtn.addEventListener("click", () => {
   if (!isPlaying) {
     audio.play();
-    playBtn.textContent = "⏸";
+    playIcon.style.display = "none";
+    pauseIcon.style.display = "block";
   } else {
     audio.pause();
-    playBtn.textContent = "▶";
+    pauseIcon.style.display = "none";
+    playIcon.style.display = "block";
   }
   isPlaying = !isPlaying;
 });
 
-// Update progress bar as audio plays
+// Reset icons after audio ends
+audio.addEventListener("ended", () => {
+  isPlaying = false;
+  pauseIcon.style.display = "none";
+  playIcon.style.display = "block";
+});
+
+// Update progress bar
 audio.addEventListener("timeupdate", () => {
   const percent = (audio.currentTime / audio.duration) * 100;
   progressFill.style.width = percent + "%";
 });
 
-// Scrub to position when clicking progress bar
+// Scrub to position
 progress.addEventListener("click", (e) => {
   const rect = progress.getBoundingClientRect();
   const clickX = e.clientX - rect.left;
